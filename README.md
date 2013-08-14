@@ -12,6 +12,7 @@ $ npm install seesaw
 ### Use CLI
 
 ````
+$ sudo npm install seesaw -g
 $ swwsaw -r http://abc.com/apis -p 9999 // mock http://abc.com/apis running on port[9999]
 ````
 
@@ -21,10 +22,10 @@ $ swwsaw -r http://abc.com/apis -p 9999 // mock http://abc.com/apis running on p
 var Seesaw = require('seesaw');
 
 // init a server instance
-var poker = new Seesaw('http://abc.com/apis'); // the base url you wanna mock
+var server = new Seesaw('http://abc.com/apis'); // the base url you wanna mock
 
 // start sever
-poker.run();
+server.run();
 ````
 
 ### How to seesaw ?
