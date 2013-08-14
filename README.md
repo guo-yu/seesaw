@@ -27,7 +27,7 @@ $ sudo npm install seesaw -g
 $ swwsaw -r http://abc.com/apis -p 9999 // mock http://abc.com/apis running on port[9999]
 ````
 
-### Using as signle spring server
+### Using as single springboard server
 
 ````javascript
 var Seesaw = require('seesaw');
