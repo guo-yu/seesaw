@@ -4,7 +4,7 @@ var http = require('http'),
     request = require('request');
 
 var fetch = function(target, callback) {
-    console.log(target);
+    // console.log(target);
     if (target.method == 'POST') {
         target['form'] = target.body;
     }
@@ -12,6 +12,22 @@ var fetch = function(target, callback) {
     request(target, function(err, res, body) {
         callback(err, res, body)
     });
+}
+
+var redirect = function(mockurl) {
+    return function(req, response, next) {
+        var target = {
+            method: req.method,
+            url: mockurl + req.url,
+            query: req.query,
+            body: req.body,
+            files: req.files,
+            headers: req.headers
+        };
+        fetch(target, function(err, res, body) {
+            response.json(body);
+        });
+    }
 }
 
 var Server = function(mockurl) {
@@ -33,20 +49,7 @@ var Server = function(mockurl) {
         app.use(express.errorHandler());
     }
 
-    // mock api
-    app.all('*', function(req, response, next) {
-        var target = {
-            method: req.method,
-            url: mockurl + req.url,
-            query: req.query,
-            body: req.body,
-            files: req.files,
-            headers: req.headers
-        };
-        fetch(target,function(err,res,body){
-            response.json(body);
-        });
-    });
+    app.use(redirect(mockurl));
 
     return app;
 }
@@ -66,4 +69,5 @@ Seesaw.prototype.run = function(port) {
     http.createServer(self.app).listen(self.app.get('port'));
 }
 
-module.exports = Seesaw;
+exports.server = Seesaw;
+exports.redirect = redirect;

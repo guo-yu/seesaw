@@ -9,14 +9,25 @@ a quick-setup springboard server working around client-side cross-domain request
 $ npm install seesaw
 ````
 
+### Using as Express middleware
+
+````
+var seesaw = require('seesaw').redirect;
+
+// incert before custom routers
+app.use('/someDir',seesaw('http://abc.com/apis')) // the base url you wanna mock
+````
+
 ### Use CLI
+
+(now building...)
 
 ````
 $ sudo npm install seesaw -g
 $ swwsaw -r http://abc.com/apis -p 9999 // mock http://abc.com/apis running on port[9999]
 ````
 
-### Sample code
+### Using as signle spring server
 
 ````javascript
 var Seesaw = require('seesaw');
@@ -25,7 +36,7 @@ var Seesaw = require('seesaw');
 var server = new Seesaw('http://abc.com/apis'); // the base url you wanna mock
 
 // start sever
-server.run();
+server.run(1234);
 ````
 
 ### How to seesaw ?
