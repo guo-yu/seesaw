@@ -22,10 +22,18 @@ var redirect = function(mockurl) {
             query: req.query,
             body: req.body,
             files: req.files,
-            headers: req.headers
+            headers: {
+                host: req['host'],
+                'user-agent': req['user-agent'],
+                cookie: req['cookie']
+            }
         };
         fetch(target, function(err, res, body) {
-            response.json(body);
+            if (res.headers['content-type'] == 'application/json') {
+                response.json(JSON.parse(body));                
+            } else {
+                response.send(body);
+            }
         });
     }
 }
