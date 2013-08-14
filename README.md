@@ -55,6 +55,7 @@ $.get('http://mockserver:port/user/1234567',function(result){
 
 - quick setup
 - develeoper friendly
+- express middleware supported
 
 ### Pull Request Welcome !
 
