@@ -1,0 +1,6 @@
+*.sublime-*
+node_*
+.DS_*
+*.log
+psd
+thumb

@@ -1,0 +1,25 @@
+{
+  "name": "seesaw",
+  "version": "0.0.1",
+  "description": "a quick-setup springboard server working around cross-domain requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turingou/seesaw.git"
+  },
+  "keywords": [
+    "springboard",
+    "express",
+    "cross-domain",
+    "request",
+    "server"
+  ],
+  "author": "turing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/turingou/seesaw/issues"
+  }
+}
