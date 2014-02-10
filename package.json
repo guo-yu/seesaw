@@ -1,6 +1,6 @@
 {
   "name": "seesaw",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "a quick-setup springboard server working around cross-domain requests",
   "main": "index.js",
   "scripts": {

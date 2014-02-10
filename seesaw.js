@@ -1,64 +1,36 @@
-var http = require('http'),
-    express = require('express'),
+var url = require('url'),
+    http = require('http'),
     path = require('path'),
+    express = require('express'),
     request = require('request');
 
-var fetch = function(target, callback) {
-    // console.log(target);
-    if (target.method == 'POST') {
-        target['form'] = target.body;
-    }
-    delete target.body;
-    request(target, function(err, res, body) {
-        callback(err, res, body)
-    });
-}
-
 var redirect = function(mockurl) {
-    return function(req, response, next) {
-        var target = {
-            method: req.method,
-            url: mockurl + req.url,
-            query: req.query,
-            body: req.body,
-            files: req.files,
-            headers: {
-                host: req['host'],
-                'user-agent': req['user-agent'],
-                cookie: req['cookie']
-            }
-        };
-        fetch(target, function(err, res, body) {
-            if (res.headers['content-type'] == 'application/json') {
-                response.json(JSON.parse(body));                
-            } else {
-                response.send(body);
-            }
+    return function(req, res, next) {
+        var target = {};
+        target.method = req.method;
+        target.headers = req.headers;
+        target.url = url.resolve(mockurl, req.url);
+        target.query = req.query;
+        target.body = req.body;
+        target.files = req.files;
+        if (target.method === 'POST') target.form = target.body;
+        request(target, function(err, response, body) {
+            if (err) return res.send(err);
+            if (res.headers['content-type'] == 'application/json') return res.json(JSON.parse(body));                
+            return res.send(body);
         });
     }
 }
 
 var Server = function(mockurl) {
-
     var app = express();
-
-    // all environments
     app.use(express.logger('dev'));
-    app.use(express.bodyParser({
-        keepExtensions: true,
-        uploadDir: path.join(__dirname, '/uploads')
-    }));
+    app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser('seesaw'));
     app.use(app.router);
-
-    // development only
-    if ('development' == app.get('env')) {
-        app.use(express.errorHandler());
-    }
-
+    if ('development' == app.get('env')) app.use(express.errorHandler());
     app.use(redirect(mockurl));
-
     return app;
 }
 
@@ -68,13 +40,9 @@ var Seesaw = function(url) {
 }
 
 Seesaw.prototype.run = function(port) {
-    var self = this;
-    if (port && !isNaN(parseInt(port))) {
-        self.app.set('port', parseInt(port));
-    } else {
-        self.app.set('port', 3333);
-    }
-    http.createServer(self.app).listen(self.app.get('port'));
+    var p = (port && !isNaN(parseInt(port))) ? parseInt(port) : 3333;
+    this.app.set('port', p);
+    http.createServer(this.app).listen(this.app.get('port'));
 }
 
 exports.server = Seesaw;
