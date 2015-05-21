@@ -1,13 +1,12 @@
 {
   "name": "seesaw",
-  "version": "0.0.6",
-  "description": "a quick-setup springboard server working around cross-domain requests",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "a quick-setup springboard service working around cross-domain requests",
+  "main": "dist/seesaw.js",
+  "bin": "bin/cli",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "bin": {
-    "seesaw": "./bin/cli"
+    "build": "node_modules/.bin/babel libs --out-dir dist --source-maps --watch",
+    "dev": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -27,6 +26,9 @@
   },
   "dependencies": {
     "express": "3.3.1",
-    "request" : "*"
+    "request": "^2.55.0"
+  },
+  "devDependencies": {
+    "babel": "^5.2.17"
   }
 }
